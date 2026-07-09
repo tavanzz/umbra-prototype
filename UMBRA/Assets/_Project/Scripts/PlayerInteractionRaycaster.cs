@@ -30,10 +30,7 @@ namespace Umbra.Prototype
 
         private void Awake()
         {
-            if (playerCamera == null)
-            {
-                playerCamera = GetComponentInChildren<Camera>();
-            }
+            ResolvePlayerCamera();
         }
 
         private void Update()
@@ -46,14 +43,24 @@ namespace Umbra.Prototype
             }
         }
 
+        public void Configure(Camera cameraReference)
+        {
+            playerCamera = cameraReference;
+        }
+
         private void UpdateTarget()
         {
             currentInteractable = null;
 
             if (playerCamera == null)
             {
-                Debug.LogWarning($"{nameof(PlayerInteractionRaycaster)} on {name} needs a player camera reference.", this);
-                return;
+                ResolvePlayerCamera();
+
+                if (playerCamera == null)
+                {
+                    Debug.LogWarning($"{nameof(PlayerInteractionRaycaster)} on {name} needs a player camera reference.", this);
+                    return;
+                }
             }
 
             Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
@@ -68,6 +75,21 @@ namespace Umbra.Prototype
             }
 
             currentInteractable = hit.collider.GetComponentInParent<IInteractable>();
+        }
+
+        private void ResolvePlayerCamera()
+        {
+            if (playerCamera != null)
+            {
+                return;
+            }
+
+            playerCamera = GetComponentInChildren<Camera>();
+
+            if (playerCamera == null && Camera.main != null)
+            {
+                playerCamera = Camera.main;
+            }
         }
     }
 }

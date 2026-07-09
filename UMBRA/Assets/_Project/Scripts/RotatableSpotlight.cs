@@ -87,6 +87,12 @@ namespace Umbra.Prototype
             }
         }
 
+        public void Configure(Transform pivot, Light lightReference)
+        {
+            rotationPivot = pivot;
+            controlledLight = lightReference;
+        }
+
         private static float NormalizeAngle(float angle)
         {
             while (angle > 180f) angle -= 360f;
