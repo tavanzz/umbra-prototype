@@ -73,6 +73,7 @@ namespace Umbra.Prototype
                 : CreateFallbackPlatform(position, rotation);
 
             currentPlatform.name = "Solid Shadow Platform";
+            currentPlatform.SetActive(true);
 
             if (applySizeToPrefab && solidShadowPrefab != null)
             {
@@ -81,6 +82,14 @@ namespace Umbra.Prototype
 
             EnsureCollider(currentPlatform);
             Destroy(currentPlatform, platformDuration);
+        }
+
+        public void Configure(Transform lightTransform, Transform casterTransform, Transform receiverTransform, GameObject platformPrefab)
+        {
+            lightSource = lightTransform;
+            shadowCaster = casterTransform;
+            receiverPlane = receiverTransform;
+            solidShadowPrefab = platformPrefab;
         }
 
         private bool HasRequiredReferences()

@@ -46,6 +46,11 @@ namespace Umbra.Prototype
             }
         }
 
+        public void Configure(Camera cameraReference)
+        {
+            playerCamera = cameraReference;
+        }
+
         private void UpdateTarget()
         {
             currentInteractable = null;
